@@ -5,6 +5,7 @@ import { TextField, Button, Grid, Box, IconButton } from "@mui/material";
 import menuItems from "../../utils/menu";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Settings = () => {
   const [open, setOpen] = useState({});
@@ -54,7 +55,7 @@ const Settings = () => {
   useEffect(() => {
     const loading = toast.loading("Loading Settings....");
     // Fetch data from API
-    fetch("http://localhost:8000/api/settings")
+    fetch(`${BASE_URL}settings`)
       .then((response) => response.json())
       .then((data) => {
         // Remove _id and __v fields from data
@@ -99,7 +100,7 @@ const Settings = () => {
     try {
       // Send a PATCH request to the API
       const response = await fetch(
-        `http://localhost:8000/api/settings/662cb2234be98292b9d42972`,
+        `${BASE_URL}settings/662cb2234be98292b9d42972`,
         {
           method: "PATCH",
           headers: {

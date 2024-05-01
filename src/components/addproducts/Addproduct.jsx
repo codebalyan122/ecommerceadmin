@@ -22,6 +22,7 @@ import { Home } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Addproduct = () => {
   const [name, setName] = useState("");
@@ -43,10 +44,10 @@ const Addproduct = () => {
     const fetchCategories = async () => {
       try {
         const topCategoriesResponse = await axios.get(
-          "http://localhost:8000/api/topcategories"
+          `${BASE_URL}topcategories`
         );
         const midCategoriesResponse = await axios.get(
-          "http://localhost:8000/api/midcategories"
+          `${BASE_URL}midcategories`
         );
         setTopCategories(topCategoriesResponse.data);
         setMidCategories(midCategoriesResponse.data);
@@ -90,15 +91,11 @@ const Addproduct = () => {
       formData.append("isNewArrival", isNewArrival);
       formData.append("isBestSelling", isBestSelling);
 
-      const response = await axios.post(
-        "http://localhost:8000/api/products",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}products`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log(response.data);
       setName("");
