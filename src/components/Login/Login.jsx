@@ -61,11 +61,11 @@ const Login = () => {
       }
     }
   }, []);
-  useEffect(() => {
-    if (error) {
-      toast.error("check the email or password again!");
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error("check the email or password again!");
+  //   }
+  // }, [error]);
 
   return (
     <div
