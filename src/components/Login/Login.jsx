@@ -25,10 +25,10 @@ const Login = () => {
     event.preventDefault();
     dispatch(loginUser(email, inputPassword));
   };
-  useEffect(() => {
-    // Clear the token from localStorage when the Login component is mounted
-    localStorage.removeItem("token");
-  }, []);
+  // useEffect(() => {
+  //   // Clear the token from localStorage when the Login component is mounted
+  //   localStorage.removeItem("token");
+  // }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -61,11 +61,11 @@ const Login = () => {
       }
     }
   }, []);
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error("check the email or password again!");
-  //   }
-  // }, [error]);
+  useEffect(() => {
+    if (error) {
+      toast.error("check the email or password again!");
+    }
+  }, [error]);
 
   return (
     <div
