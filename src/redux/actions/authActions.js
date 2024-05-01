@@ -21,7 +21,7 @@ export const loginUser = (email, password) => {
     console.log(email, password);
     try {
       // Make API call to authenticate user
-      const response = await axios.post("http://localhost:8000/api/login", {
+      const response = await axios.post(`${process.env.BASE_URL}api/login`, {
         email,
         password,
       });

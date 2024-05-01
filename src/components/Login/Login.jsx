@@ -25,10 +25,10 @@ const Login = () => {
     event.preventDefault();
     dispatch(loginUser(email, inputPassword));
   };
-  // useEffect(() => {
-  //   // Clear the token from localStorage when the Login component is mounted
-  //   localStorage.removeItem("token");
-  // }, []);
+  useEffect(() => {
+    // Clear the token from localStorage when the Login component is mounted
+    localStorage.removeItem("token");
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
