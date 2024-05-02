@@ -22,6 +22,7 @@ import "froala-editor/css/froala_editor.pkgd.min.css";
 import menuItems from "../../utils/menu";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const EditMidcategory = () => {
   const { midCategoryId } = useParams();
@@ -56,7 +57,7 @@ const EditMidcategory = () => {
   useEffect(() => {
     const loading = toast.loading("Loading Details...");
     const fetchTopCategories = async () => {
-      const response = await fetch("http://localhost:8000/api/topcategories");
+      const response = await fetch(`${BASE_URL}topcategories`);
       const data = await response.json();
       toast.dismiss(loading);
       toast.success("Category Fetched Sucessfully");
@@ -64,9 +65,7 @@ const EditMidcategory = () => {
     };
 
     const fetchMidCategory = async () => {
-      const response = await fetch(
-        `http://localhost:8000/api/midcategories/${id}`
-      );
+      const response = await fetch(`${BASE_URL}midcategories/${id}`);
       const data = await response.json();
       console.log(data);
       setName(data.name);
@@ -93,7 +92,7 @@ const EditMidcategory = () => {
       formData.append("categories", categories); // Send categories as an array of strings
 
       const response = await axios.patch(
-        `http://localhost:8000/api/midcategories/${id}`,
+        `${BASE_URL}midcategories/${id}`,
         formData,
         {
           headers: {

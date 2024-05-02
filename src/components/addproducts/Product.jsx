@@ -19,6 +19,7 @@ import Sidebar from "../Sidebar/SideBar";
 import menuItems from "../../utils/menu";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Product = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Product = () => {
     const loading = toast.loading("Loading products Data....");
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/products");
+        const response = await axios.get(`${BASE_URL}products`);
         setRows(response.data);
         toast.dismiss(loading);
         toast.success("Data Fetched Successfully!");
@@ -100,16 +101,14 @@ const Product = () => {
       if (confirmDelete) {
         const loadingToastId = toast.loading("Deleting product...");
 
-        await axios.delete(`http://localhost:8000/api/products/${id}`);
+        await axios.delete(`${BASE_URL}products/${id}`);
 
         toast.dismiss(loadingToastId);
         toast.success("Product deleted successfully");
         const loading = toast.loading("Loading products Data....");
         const fetchProducts = async () => {
           try {
-            const response = await axios.get(
-              "http://localhost:8000/api/products"
-            );
+            const response = await axios.get(`${BASE_URL}products`);
             setRows(response.data);
             toast.dismiss(loading);
             toast.success("Data Fetched Successfully!");

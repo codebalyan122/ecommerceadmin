@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { Home } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const AddMidcategory = () => {
   const [name, setName] = useState("");
@@ -66,7 +67,7 @@ const AddMidcategory = () => {
       formData.append("image", image);
       formData.append("categories", JSON.stringify(categories));
 
-      const response = await fetch("http://localhost:8000/api/midcategories", {
+      const response = await fetch(`${BASE_URL}midcategories`, {
         method: "POST",
         body: formData,
       });
@@ -94,7 +95,7 @@ const AddMidcategory = () => {
   };
   const fetchTopCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/topcategories");
+      const response = await fetch(`${BASE_URL}topcategories`);
       const data = await response.json();
       setTopCategories(data);
     } catch (error) {

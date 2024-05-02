@@ -22,6 +22,7 @@ import { Home } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Editproduct = () => {
   const { id } = useParams();
@@ -46,9 +47,7 @@ const Editproduct = () => {
     const fetchProductData = async () => {
       const loadingToastId = toast.loading("Loading Product Data...");
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/products/${id}`
-        );
+        const response = await axios.get(`${BASE_URL}products/${id}`);
 
         const productData = response.data;
 
@@ -82,10 +81,10 @@ const Editproduct = () => {
     const fetchCategories = async () => {
       try {
         const topCategoriesResponse = await axios.get(
-          "http://localhost:8000/api/topcategories"
+          `${BASE_URL}topcategories`
         );
         const midCategoriesResponse = await axios.get(
-          "http://localhost:8000/api/midcategories"
+          `${BASE_URL}midcategories`
         );
         setTopCategories(topCategoriesResponse.data);
         setMidCategories(midCategoriesResponse.data);
@@ -132,7 +131,7 @@ const Editproduct = () => {
       formData.append("isBestSelling", isBestSelling);
       console.log(selectedMidCategories);
       const response = await axios.patch(
-        `http://localhost:8000/api/products/${id}`,
+        `${BASE_URL}products/${id}`,
         formData,
         {
           headers: {

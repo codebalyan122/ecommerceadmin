@@ -19,6 +19,7 @@ import Sidebar from "../Sidebar/SideBar";
 import menuItems from "../../utils/menu";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Slider = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Slider = () => {
     const loading = toast.loading("Loading Sliders...");
     const fetchSliders = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/sliders");
+        const response = await axios.get(`${BASE_URL}sliders`);
         setRows(response.data);
         toast.dismiss(loading);
         toast.success("Slider Fetched Sucessfully...");
@@ -96,7 +97,7 @@ const Slider = () => {
       if (confirmDelete) {
         const loadingToastId = toast.loading("Deleting Slider...");
 
-        await axios.delete(`http://localhost:8000/api/sliders/${id}`);
+        await axios.delete(`${BASE_URL}sliders/${id}`);
 
         toast.dismiss(loadingToastId);
         toast.success("Slider deleted successfully");
@@ -110,9 +111,7 @@ const Slider = () => {
 
         const fetchSliders = async () => {
           try {
-            const response = await axios.get(
-              "http://localhost:8000/api/sliders"
-            );
+            const response = await axios.get(`${BASE_URL}sliders`);
             setRows(response.data);
             toast.dismiss(loadingToastIds);
             toast.success("Slider Fetched Sucessfully...");

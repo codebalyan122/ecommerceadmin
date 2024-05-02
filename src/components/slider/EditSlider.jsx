@@ -10,6 +10,7 @@ import AdminNavbar from "../Navbar/NavbarComp";
 import Sidebar from "../Sidebar/SideBar";
 import menuItems from "../../utils/menu";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const EditSlider = () => {
   const [name, setName] = useState("");
@@ -23,9 +24,7 @@ const EditSlider = () => {
     const fetchSliderData = async () => {
       const loading = toast.loading("Loading data....");
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/sliders/${id}`
-        );
+        const response = await axios.get(`${BASE_URL}sliders/${id}`);
         console.log(response.data);
         const { name, content, image } = response.data;
         setName(name);
@@ -78,15 +77,11 @@ const EditSlider = () => {
       formData.append("content", editorContent);
       formData.append("image", image);
 
-      const response = await axios.patch(
-        `http://localhost:8000/api/sliders/${id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.patch(`${BASE_URL}sliders/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         console.log("Data updated successfully");

@@ -19,6 +19,7 @@ import menuItems from "../../utils/menu";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const TopCategory = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const TopCategory = () => {
 
     const loadingToastId = showLoadingToast();
 
-    fetch("http://localhost:8000/api/topcategories")
+    fetch(`${BASE_URL}topcategories`)
       .then((response) => response.json())
       .then((data) => {
         setRows(data);
@@ -102,7 +103,7 @@ const TopCategory = () => {
       if (confirmDelete) {
         const loadingToastId = toast.loading("Deleting Category...");
 
-        await axios.delete(`http://localhost:8000/api/topcategories/${id}`);
+        await axios.delete(`${BASE_URL}topcategories/${id}`);
 
         toast.dismiss(loadingToastId);
         toast.success("TopCategory deleted successfully");
@@ -114,7 +115,7 @@ const TopCategory = () => {
 
         const loadingToastIds = showLoadingToast();
 
-        fetch("http://localhost:8000/api/topcategories")
+        fetch(`${BASE_URL}topcategories`)
           .then((response) => response.json())
           .then((data) => {
             setRows(data);

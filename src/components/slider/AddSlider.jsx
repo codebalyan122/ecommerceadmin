@@ -9,6 +9,7 @@ import AdminNavbar from "../Navbar/NavbarComp";
 import Sidebar from "../Sidebar/SideBar";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const AddSlider = () => {
   const [name, setName] = useState("");
@@ -73,15 +74,11 @@ const AddSlider = () => {
       formData.append("content", editorContent);
       formData.append("image", image);
 
-      const response = await axios.post(
-        "http://localhost:8000/api/sliders/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}sliders/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         console.log("Data sent successfully");

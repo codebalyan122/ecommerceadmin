@@ -19,6 +19,7 @@ import menuItems from "../../utils/menu";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const MidCategory = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const MidCategory = () => {
   const fetchMidCategories = async () => {
     const loading = toast.loading("Loading Mid Categories");
     try {
-      const response = await fetch("http://localhost:8000/api/midcategories");
+      const response = await fetch(`${BASE_URL}midcategories`);
       const data = await response.json();
       setRows(data);
       toast.dismiss(loading);
@@ -95,16 +96,14 @@ const MidCategory = () => {
       );
       if (confirmDelete) {
         const deleteToastId = toast.loading("Deleting MidCategory...");
-        await axios.delete(`http://localhost:8000/api/midcategories/${id}`);
+        await axios.delete(`${BASE_URL}midcategories/${id}`);
         toast.dismiss(deleteToastId);
         toast.success("MidCategory deleted successfully");
 
         const fetchMidCategories = async () => {
           const loadingToastId = toast.loading("Loading Mid Categories");
           try {
-            const response = await fetch(
-              "http://localhost:8000/api/midcategories"
-            );
+            const response = await fetch(`${BASE_URL}midcategories`);
             const data = await response.json();
             setRows(data);
             toast.dismiss(loadingToastId);

@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { Home } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const AddTopCategory = () => {
   const [name, setName] = useState("");
@@ -47,15 +48,11 @@ const AddTopCategory = () => {
       formData.append("content", editorContent);
       formData.append("image", image);
 
-      const response = await axios.post(
-        "http://localhost:8000/api/topcategories",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}topcategories`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("Top category saved:", response.data);
       toast.success(response.data.msg);

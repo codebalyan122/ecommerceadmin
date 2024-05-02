@@ -11,6 +11,7 @@ import { Link, useParams } from "react-router-dom";
 import { Home } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const EditTopCategory = () => {
   const { id } = useParams();
@@ -24,9 +25,7 @@ const EditTopCategory = () => {
     // Fetch the top category data from the API based on the id
     const fetchTopCategory = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/topcategories/${id}`
-        );
+        const response = await axios.get(`${BASE_URL}topcategories/${id}`);
         const topCategory = response.data;
         setName(topCategory.name);
         setEditorContent(topCategory.content);
@@ -71,7 +70,7 @@ const EditTopCategory = () => {
       formData.append("image", image);
 
       const response = await axios.patch(
-        `http://localhost:8000/api/topcategories/${id}`,
+        `${BASE_URL}topcategories/${id}`,
         formData,
         {
           headers: {
