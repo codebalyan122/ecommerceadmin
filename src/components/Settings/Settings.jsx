@@ -30,7 +30,10 @@ const Settings = () => {
 
     setState({ ...state, [anchor]: open });
   };
+  const [image, setImage] = useState(null);
+  const [prevImage, setPrevImage] = useState("");
   const [formData, setFormData] = useState({
+    imageURL: "",
     email: "",
     companyName: "",
     contactNumber: "",
@@ -45,27 +48,22 @@ const Settings = () => {
       linkedin: "",
     },
   });
-  const [image, setImage] = useState(null);
-  const [prevImage, setPrevImage] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-  };
   useEffect(() => {
     const loading = toast.loading("Loading Settings....");
     // Fetch data from API
-    fetch(`${BASE_URL}settings`)
+    fetch(`http://localhost:9000/api/settings`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         // Remove _id and __v fields from data
-        const { _id, __v, ...filteredData } = data;
+        const { _id, __v, imageURL, ...filteredData } = data;
         // Update form data with fetched data
         setFormData(filteredData);
+        // Update previous image URL
+        setPrevImage(imageURL);
         toast.dismiss(loading);
         toast.success("Setting loaded succesfully");
-        // If you want to prepopulate image as well
-        // setPrevImage(data.image);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -98,31 +96,57 @@ const Settings = () => {
     e.preventDefault();
 
     try {
+      const formDataToSend = new FormData();
+
+      // Convert socialMedia object to a plain JavaScript object
+      const plainSocialMediaObject = { ...formData.socialMedia };
+
+      // Append non-file fields to the FormData object
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "socialMedia") {
+          // Append each key-value pair of the socialMedia object separately
+          Object.entries(value).forEach(
+            ([socialMediaKey, socialMediaValue]) => {
+              formDataToSend.append(
+                `socialMedia.${socialMediaKey}`,
+                socialMediaValue
+              );
+            }
+          );
+        } else {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      // Append the image file to the FormData object
+      if (image) {
+        formDataToSend.append("image", image);
+      }
+
+      console.log(formData);
       // Send a PATCH request to the API
       const response = await fetch(
-        `${BASE_URL}settings/662cb2234be98292b9d42972`,
+        `http://localhost:9000/api/settings/662cb2234be98292b9d42972`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          body: formDataToSend,
         }
       );
 
       if (response.ok) {
         // Handle successful update
         console.log("Settings updated successfully");
-        toast.success("settings updated Sucessfully");
+        toast.success("Settings updated successfully");
+      } else {
         // Handle error
         console.error("Error updating settings");
+        toast.error("Error updating settings");
       }
     } catch (error) {
       console.error("Error updating settings:", error);
       toast.error("Something went wrong...");
     }
   };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <AdminNavbar
@@ -150,25 +174,26 @@ const Settings = () => {
         >
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <input
-                accept="image/*"
-                id="image-upload"
-                type="file"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
               <label htmlFor="image-upload">
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
                 <IconButton color="primary" component="span">
                   <AddPhotoAlternateIcon />
                 </IconButton>
+                <span>{image ? image.name : "Select an image"}</span>
               </label>
             </Grid>
             <Grid item xs={12}>
               {prevImage && (
                 <img
-                  src={URL.createObjectURL(prevImage)}
+                  src={`http://localhost:9000/settings/${prevImage}`}
                   alt="Previous Image"
-                  style={{ maxWidth: "100%" }}
+                  style={{ maxWidth: "200px" }}
                 />
               )}
             </Grid>
@@ -254,7 +279,7 @@ const Settings = () => {
                 id="facebook"
                 label="Facebook"
                 fullWidth
-                value={formData.socialMedia.facebook}
+                value={formData?.socialMedia?.facebook}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -277,7 +302,7 @@ const Settings = () => {
                 id="twitter"
                 label="Twitter"
                 fullWidth
-                value={formData.socialMedia.twitter}
+                value={formData?.socialMedia?.twitter}
                 onChange={handleInputChange}
                 // autoComplete=""
               />
@@ -289,7 +314,7 @@ const Settings = () => {
                 id="youtube"
                 label="Youtube"
                 fullWidth
-                value={formData.socialMedia.youtube}
+                value={formData?.socialMedia?.youtube}
                 onChange={handleInputChange}
                 // autoComplete=""
               />
@@ -302,7 +327,7 @@ const Settings = () => {
                 fullWidth
                 name="socialMedia.linkedin"
                 // autoComplete=""
-                value={formData.socialMedia.linkedin}
+                value={formData?.socialMedia?.linkedin}
                 onChange={handleInputChange}
               />
             </Grid>

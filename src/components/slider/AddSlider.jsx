@@ -42,7 +42,7 @@ const AddSlider = () => {
   //   console.log("Image:", image);
   //   // Here you might want to push the data to a backend or state management
   // };
-
+  console.log(image);
   const [open, setOpen] = useState({});
   const handleClick = (text) => {
     setOpen((prevOpen) => ({
@@ -65,6 +65,7 @@ const AddSlider = () => {
 
     setState({ ...state, [anchor]: open });
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -72,8 +73,10 @@ const AddSlider = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("content", editorContent);
-      formData.append("image", image);
-
+      if (image) {
+        formData.append("image", image);
+      }
+      console.log(formData);
       const response = await axios.post(`${BASE_URL}sliders/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -95,7 +98,6 @@ const AddSlider = () => {
       // Handle the error
     }
   };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <AdminNavbar
