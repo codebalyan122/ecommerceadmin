@@ -126,7 +126,7 @@ const Settings = () => {
       console.log(formData);
       // Send a PATCH request to the API
       const response = await fetch(
-        `${BASE_URL}api/settings/662cb2234be98292b9d42972`,
+        `${BASE_URL}settings/662cb2234be98292b9d42972`,
         {
           method: "PATCH",
           body: formDataToSend,
