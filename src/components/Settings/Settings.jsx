@@ -52,7 +52,7 @@ const Settings = () => {
   useEffect(() => {
     const loading = toast.loading("Loading Settings....");
     // Fetch data from API
-    fetch(`http://localhost:9000/api/settings`)
+    fetch(`${BASE_URL}/settings`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -126,7 +126,7 @@ const Settings = () => {
       console.log(formData);
       // Send a PATCH request to the API
       const response = await fetch(
-        `http://localhost:9000/api/settings/662cb2234be98292b9d42972`,
+        `${BASE_URL}api/settings/662cb2234be98292b9d42972`,
         {
           method: "PATCH",
           body: formDataToSend,
